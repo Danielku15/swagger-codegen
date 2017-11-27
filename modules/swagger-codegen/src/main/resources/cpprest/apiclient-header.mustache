@@ -40,7 +40,9 @@ public:
     static utility::string_t parameterToString(int64_t value);
     static utility::string_t parameterToString(float value);
     static utility::string_t parameterToString(const utility::datetime &value);
-
+    
+    static void replaceAll(utility::string_t& input, const utility::string_t& search, const utility::string_t& format);
+    
     template<class T>
     static utility::string_t parameterToArrayString(std::vector<T> value)
     {

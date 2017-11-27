@@ -38,6 +38,8 @@ public:
     virtual void writeTo( std::ostream& target );
 
 protected:
+    static utility::string_t createBoundary();
+
     std::vector<std::shared_ptr<HttpContent>> m_Contents;
     utility::string_t m_Boundary;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> m_ContentLookup;

@@ -54,6 +54,23 @@ utility::string_t ApiClient::parameterToString(const utility::datetime &value)
     return utility::conversions::to_string_t(value.to_string(utility::datetime::ISO_8601));
 }
 
+// based on: https://stackoverflow.com/questions/5343190/how-do-i-replace-all-instances-of-a-string-with-another-string
+void ApiClient::replaceAll(utility::string_t& input, const utility::string_t& search, const utility::string_t& replace)
+{
+    if (input.empty() || search.empty())
+    {
+        return;
+    }
+    
+    size_t pos = 0;
+    while ((pos = input.find(search, pos)) != std::string::npos) 
+    {
+        input.replace(pos, search.length(), replace);
+        pos += replace.length();
+    }
+}
+
+
 pplx::task<web::http::http_response> ApiClient::callApi(
     const utility::string_t& path,
     const utility::string_t& method,

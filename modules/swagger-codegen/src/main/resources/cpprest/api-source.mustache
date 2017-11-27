@@ -8,8 +8,6 @@
 
 #include <unordered_set>
 
-#include <boost/algorithm/string/replace.hpp>
-
 {{#apiNamespaceDeclarations}}
 namespace {{this}} {
 {{/apiNamespaceDeclarations}}
@@ -38,7 +36,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("{{{path}}}");
-    {{#pathParams}}boost::replace_all(path, U("{") U("{{baseName}}") U("}"), ApiClient::parameterToString({{{paramName}}}));
+    {{#pathParams}}ApiClient::replaceAll(path, U("{") U("{{baseName}}") U("}"), ApiClient::parameterToString({{{paramName}}}));
     {{/pathParams}}
 
     std::map<utility::string_t, utility::string_t> queryParams;

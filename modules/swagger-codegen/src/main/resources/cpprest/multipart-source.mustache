@@ -2,18 +2,13 @@
 #include "MultipartFormData.h"
 #include "ModelBase.h"
 
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
 {{#modelNamespaceDeclarations}}
 namespace {{this}} {
 {{/modelNamespaceDeclarations}}
 
 MultipartFormData::MultipartFormData()
 {
-    utility::stringstream_t uuidString;
-    uuidString << boost::uuids::random_generator()();
-    m_Boundary = uuidString.str();
+    m_Boundary = createBoundary();
 }
 
 MultipartFormData::MultipartFormData(const utility::string_t& boundary)
@@ -93,6 +88,46 @@ void MultipartFormData::writeTo( std::ostream& target )
     }
 
     target << "\r\n--" << utility::conversions::to_utf8string( m_Boundary ) << "--\r\n";
+}
+
+utility::string_t MultipartFormData::createBoundary()
+{
+    // fill GUID with random bytes
+    std::mt19937 rnd(time(0));
+    std::vector<unsigned char> guidData(16);
+    for (size_t i = 0; i < guidData.size(); i++)
+    {
+        guidData[i] = rnd() % 256;
+    }
+
+    // convert random bytes into xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx format
+    utility::char_t guidString[37]; // 32 hex chars + 4 hyphens + null terminator
+    swprintf_s(
+        guidString, sizeof(guidString) / sizeof(guidString[0]),
+        L"%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+
+        guidData[0],
+        guidData[1],
+        guidData[2],
+        guidData[3],
+
+        guidData[4],
+        guidData[5],
+
+        guidData[6],
+        guidData[7],
+
+        guidData[8],
+        guidData[9],
+
+        guidData[10],
+        guidData[11],
+        guidData[12],
+        guidData[13],
+        guidData[14],
+        guidData[15]
+    );
+    return guidString;
 }
 
 {{#modelNamespaceDeclarations}}
