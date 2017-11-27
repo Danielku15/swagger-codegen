@@ -315,7 +315,7 @@ public class CppRestClientCodegen extends AbstractCppCodegen {
             return getSwaggerType(p) + "<utility::string_t, " + getTypeDeclaration(inner) + ">";
         }
         if (p instanceof StringProperty || p instanceof DateProperty
-                || p instanceof DateTimeProperty || p instanceof FileProperty
+                || p instanceof DateTimeProperty
                 || languageSpecificPrimitives.contains(swaggerType)) {
             return toModelName(swaggerType);
         }
