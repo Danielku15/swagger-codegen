@@ -132,7 +132,7 @@ pplx::task<web::http::http_response> ApiClient::callApi(
             auto length = bodyString.size();
             request.set_body(concurrency::streams::bytestream::open_istream(std::move(bodyString)), length, contentType);
         }
-        else
+        else if(!formParams.empty())
         {
             if (contentType == U("application/json"))
             {
